@@ -1,4 +1,3 @@
-# Backward-compatible default Dockerfile for local development.
 FROM node:18-alpine
 
 WORKDIR /backend-app
