@@ -1,6 +1,8 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     container_name: backend-app
     depends_on:
       - postgres
@@ -10,6 +12,10 @@ services:
       - app_network
     env_file:
       - .env
+    volumes:
+      - .:/backend-app
+      - /backend-app/node_modules
+
   postgres:
     image: postgres:17.1
     ports:
@@ -17,12 +23,13 @@ services:
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB}
+      POSTGRES_DB: ${DB_NAME}
       PGDATA: /var/lib/postgresql/data
     networks:
       - app_network
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
   pgadmin:
     image: dpage/pgadmin4
     ports:
@@ -36,5 +43,6 @@ services:
 networks:
   app_network:
     driver: bridge
+
 volumes:
   postgres_data:
