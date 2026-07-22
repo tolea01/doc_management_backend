@@ -35,6 +35,25 @@ export class UserSeeder {
       adminUsers.push(defaultAdmin);
     }
 
+    const defaultDirector = await this.userRepository.findOneBy({
+      email_address: 'default.director@example.com',
+    });
+
+    if (!defaultDirector) {
+      await this.userRepository.save(
+        this.userRepository.create({
+          name: 'Default',
+          surname: 'Director',
+          password: await hash('password'),
+          role: UserRole.DIRECTOR,
+          photo: faker.image.avatar(),
+          phone_number: '060000000',
+          email_address: 'default.director@example.com',
+          created_by: adminUsers[0].id,
+        }),
+      );
+    }
+
     const randomAdmin = faker.helpers.arrayElement(adminUsers);
 
     const data: IUserData[] = await Promise.all(

@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -60,6 +61,25 @@ export class AuthController {
   @ApiOperation({
     summary: 'Login user',
     description: 'This is a public route',
+  })
+  @ApiBody({
+    type: UserLoginPayloadDto,
+    examples: {
+      admin: {
+        summary: 'Admin demo',
+        value: {
+          email_address: 'default.admin@example.com',
+          password: 'password',
+        },
+      },
+      director: {
+        summary: 'Director demo',
+        value: {
+          email_address: 'default.director@example.com',
+          password: 'password',
+        },
+      },
+    },
   })
   @ApiResponse({ status: 200, description: 'User has successfully logged in' })
   @ApiResponse({ status: 400, description: 'Bad request' })

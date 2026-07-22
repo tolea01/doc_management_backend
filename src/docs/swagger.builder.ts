@@ -13,13 +13,33 @@ const buildApiDocs = <T>(app: T): void => {
         name: 'Authorization',
         in: 'header',
       },
+      'bearer',
+    )
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        in: 'header',
+      },
       'access-token',
     )
+    .addSecurityRequirements('bearer')
+    .addSecurityRequirements('access-token')
     .build();
   const swaggerDocument: OpenAPIObject = SwaggerModule.createDocument(
     app as any,
     swaggerConfig,
   );
+
+  Object.values(swaggerDocument.paths).forEach((path) => {
+    Object.values(path).forEach((operation) => {
+      if (operation && typeof operation === 'object') {
+        operation.security = [{ bearer: [] }, { 'access-token': [] }];
+      }
+    });
+  });
 
   SwaggerModule.setup(process.env.SWAGGER_PATH, app as any, swaggerDocument);
 };

@@ -4,7 +4,7 @@ import { i18nValidationMessage } from 'nestjs-i18n';
 
 export class UserLoginPayloadDto {
   @ApiProperty({
-    example: 'mymail@mail.com',
+    example: 'default.admin@example.com',
     description: 'User email address',
   })
   @IsNotEmpty({ message: i18nValidationMessage('validation.NOT_EMPTY') })
@@ -12,7 +12,7 @@ export class UserLoginPayloadDto {
   @IsEmail({}, { message: i18nValidationMessage('validation.INVALID_EMAIL') })
   email_address: string;
 
-  @ApiProperty({ example: 'LORjfkg3094!$%', description: 'User password' })
+  @ApiProperty({ example: 'password', description: 'User password' })
   @IsNotEmpty({ message: i18nValidationMessage('validation.NOT_EMPTY') })
   @IsString({ message: i18nValidationMessage('validation.INVALID_STRING') })
   @Length(8, 64, {
